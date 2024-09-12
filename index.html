@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Form</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/qrious"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="stylecss.css">
+</head>
+<body>
+    <h1>Office de la Marine Marchande et des Ports</h1>
+    <h1>Direction du port La Goulette</h1>
+    <h1>Division Capitainerie</h1>
+    <h3>Demande d'accès au port et à bord des navires</h3>
+
+    <!-- Placeholder for form image -->
+    <img src="ommp.png" alt="Scanned Form"> <!-- Replace with actual image URL or path -->
+
+    <h2>Fill Out the Form</h2>
+
+    <form id="myForm">
+        <label for="name1">إسم و اللقب 1:</label>
+        <input type="text" id="name1" name="إسم و اللقب 1" required>
+        <label for="passport1">ب ت و أو جواز السفر 1:</label>
+        <input type="text" id="passport1" name="ب ت و أو جواز السفر 1" required><br><br>
+
+        <label for="name2">إسم و اللقب 2:</label>
+        <input type="text" id="name2" name="إسم و اللقب 2" required>
+        <label for="passport2">ب ت و أو جواز السفر 2:</label>
+        <input type="text" id="passport2" name="ب ت و أو جواز السفر 2" required><br><br>
+
+        <label for="company">الإسم الشركة:</label>
+        <input type="text" id="company" name="الإسم الشركة" required><br><br>
+
+        <label for="entryDate">يوم الدخول:</label>
+        <input type="date" id="entryDate" name="يوم الدخول" required><br><br>
+
+        <label for="exitDate">يوم الخروج:</label>
+        <input type="date" id="exitDate" name="يوم الخروج" required><br><br>
+
+        <label for="reason">السبب:</label>
+        <input type="text" id="reason" name="السبب" required><br><br>
+
+        <label for="equipment">المعدات:</label>
+        <input type="text" id="equipment" name="المعدات" required><br><br>
+
+        <label for="mining1">رقم المنجمي 1:</label>
+        <input type="text" id="mining1" name="رقم المنجمي 1" required>
+        <label for="mining2">رقم المنجمي 2:</label>
+        <input type="text" id="mining2" name="رقم المنجمي 2" required><br><br>
+
+        <!-- Button to generate QR code -->
+        <button type="button" onclick="generateQRCode()">Generate QR Code</button>
+    </form>
+
+    <!-- Section to display the generated QR code -->
+    <h2>Generated QR Code:</h2>
+    <canvas id="qrcodeCanvas"></canvas>
+
+    <!-- Button to download the PDF -->
+    <br><br>
+    <button type="button" onclick="exportToPDF()">Download PDF</button>
+
+    <script>
+        function generateQRCode() {
+            // Get form data
+            var name1 = document.getElementById('name1').value;
+            var passport1 = document.getElementById('passport1').value;
+            var name2 = document.getElementById('name2').value;
+            var passport2 = document.getElementById('passport2').value;
+            var company = document.getElementById('company').value;
+            var entryDate = document.getElementById('entryDate').value;
+            var exitDate = document.getElementById('exitDate').value;
+            var reason = document.getElementById('reason').value;
+            var equipment = document.getElementById('equipment').value;
+            var mining1 = document.getElementById('mining1').value;
+            var mining2 = document.getElementById('mining2').value;
+
+            // Combine the form data into a string
+            var qrData = " Nom et Prenom 1 : " + name1 + "\n" +
+                         "C.I.N ou Passport 1 : " + passport1 + "\n" +
+                         "Nom et Prenom 2 : " + name2 + "\n" +
+                         "C.I.N ou Passport 2 : " + passport2 + "\n" +
+                         "La Societe : " + company + "\n" +
+                         "Date d Entree: " + entryDate + "\n" +
+                         "Jusqu au : " + exitDate + "\n" +
+                         "Motif de la Visite : " + reason + "\n" +
+                         "Les Equipements : " + equipment + "\n" +
+                         "Type et Matricule 1 : " + mining1 + "\n" +
+                         "Type et Matricule 2 : " + mining2;
+
+            // Generate QR code
+            var qr = new QRious({
+                element: document.getElementById('qrcodeCanvas'),
+                value: qrData,
+                size: 200
+            });
+        }
+
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            
+            // Get form data
+            var name1 = document.getElementById('name1').value;
+            var passport1 = document.getElementById('passport1').value;
+            var name2 = document.getElementById('name2').value;
+            var passport2 = document.getElementById('passport2').value;
+            var company = document.getElementById('company').value;
+            var entryDate = document.getElementById('entryDate').value;
+            var exitDate = document.getElementById('exitDate').value;
+            var reason = document.getElementById('reason').value;
+            var equipment = document.getElementById('equipment').value;
+            var mining1 = document.getElementById('mining1').value;
+            var mining2 = document.getElementById('mining2').value;
+
+            doc.setFont("helvetica");
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0); 
+            doc.text("Demande d'accès au port et à bord des Navires", 50, 90);
+
+            doc.setFont("helvetica");
+            doc.setFontSize(14);
+            doc.setTextColor(30, 30, 30);
+            doc.text("nom et prénom 1: " + name1, 20, 110);
+            doc.text("N° CIN ou Passport 1: " + passport1, 20, 120);
+            doc.text("nom et prénom 2: " + name2, 20, 130);
+            doc.text("N° CIN ou Passport 2: " + passport2, 20, 140);
+            doc.text("La Société: " + company, 20, 150);
+            doc.text("Date d'entrée: " + entryDate, 20, 160);
+            doc.text("jusqu'au : " + exitDate, 20, 170);
+            doc.text("motif de la visite : " + reason, 20, 180);
+            doc.text("les équipements : " + equipment, 20, 190);
+            doc.text("Matricule 1: " + mining1, 20, 200);
+            doc.text("Matricule 2: " + mining2, 20, 210);
+
+
+            // Get the QR code as an image
+            var qrCodeCanvas = document.getElementById('qrcodeCanvas');
+            var qrCodeDataURL = qrCodeCanvas.toDataURL("image/png");
+
+            // Add QR code to PDF
+            doc.addImage(qrCodeDataURL, "PNG", 80, 10, 40, 40); // x, y, width, height
+
+
+            // Save the PDF
+            doc.save("Form_with_QR_Code.pdf");
+        }
+    </script>
+</body>
+</html>
